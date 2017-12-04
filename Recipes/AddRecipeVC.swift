@@ -10,12 +10,36 @@ import UIKit
 
 class AddRecipeVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBOutlet weak var recipeImage: UIImageView!
+    @IBOutlet weak var recipeNameTextField: UITextField!
+    @IBOutlet weak var recipeIngredientsTextView: UITextView!
     
+    var defaultsData = UserDefaults.standard
+    var localRecipeAddedNameArray = [String]()
+    var localRecipeAddedIngredientsArray = [String]()
+    var localRecipeAddedImageArray = [UIImage]()
+    
+    struct FavoriteRecipesAdded {
+        var recipeAddedName: String
+        var recipeAddedIngredients: [String] = []
+        var recipeAddedImage = UIImage()
+    }
+    
+    var favoriteRecipesAdded = [FavoriteRecipesAdded]()
+    
+
     var recipeImagePicker = UIImagePickerController()
-    
+    var recipeName: String = ""
+    var recipeIngredients: String = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
         recipeImagePicker.delegate = self
+        navigationController?.navigationBar.barTintColor = UIColor.init(red: 245/255, green: 105/255, blue: 35/255, alpha: 1.0)
+    }
+    
+    func saveDefaultsData() {
+        defaultsData.set(localRecipeAddedNameArray, forKey: "localRecipeAddedNameArray")
+        defaultsData.set(localRecipeAddedIngredientsArray, forKey: "localRecipeAddedIngredientsArray")
     }
     
     //Pick an image from the library
@@ -51,4 +75,9 @@ class AddRecipeVC: UIViewController, UIImagePickerControllerDelegate, UINavigati
             navigationController?.popViewController(animated: true)
         }
     }
+    
+    @IBAction func savePressed(_ sender: UIBarButtonItem) {
+        //Here i want to segue to favorite recipes and also save the information added to the array housing favorite recipes
+    }
+    
 }
