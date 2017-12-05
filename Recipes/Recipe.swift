@@ -24,9 +24,11 @@ class Recipe {
     var totalRecipes = 0
     var urlsRetrieved = [String]()
     var recipesURLOne = "https://api.edamam.com/search?q="
-    var recipesURLTwo = "&app_id=8b9755a9&app_key=88158a47708c2a82f63ab47d87d3f848&from=0&to=15"
+    var recipesURLTwo = "&app_id=8b9755a9&app_key=88158a47708c2a82f63ab47d87d3f848&from="
+    var recipesURLThree = "&to="
     var recipesURLCombined = ""
     var randomRecipeChosen = ""
+    var recipeNum = 100
     var randomRecipeArray = ["beef",
                              "curry+leaves",
                              "sauerkraut",
@@ -77,7 +79,7 @@ class Recipe {
                              "schawarma",
                              "guacamole",
                              "taco",
-                             "tortelini",
+                             "tortellini",
                              "ravioli",
                              "linguini",
                              "cookies",
@@ -100,15 +102,75 @@ class Recipe {
                              "custard",
                              "latte",
                              "coffee",
-                             "mint"]
+                             "mint",
+                             "popcorn",
+                             "masala+dosa",
+                             "chips",
+                             "paella",
+                             "poutine",
+                             "tofu",
+                             "marzipan",
+                             "hummus",
+                             "tacos",
+                             "nachos",
+                             "chili",
+                             "crab",
+                             "tea",
+                             "pho",
+                             "ramen",
+                             "soup",
+                             "fajitas",
+                             "garlic",
+                             "poke",
+                             "croissant",
+                             "arepas",
+                             "kebab",
+                             "pierogi",
+                             "donut",
+                             "corn",
+                             "curry"]
     
     func randomFoodGenerator() {
         let randomNumber = Int(arc4random_uniform(UInt32(randomRecipeArray.count)))
+        let recipeFrom = Int(arc4random_uniform(UInt32(100)))
+        let randomRecipeTo = recipeFrom + 15
         let randomRecipe = randomRecipeArray[randomNumber]
-        recipesURLCombined = "\(recipesURLOne)\(randomRecipe)\(recipesURLTwo)"
+        recipesURLCombined = "\(recipesURLOne)\(randomRecipe)\(recipesURLTwo)\(recipeFrom)\(recipesURLThree)\(randomRecipeTo)"
         randomRecipeChosen = randomRecipe.capitalized
+        print(recipesURLCombined)
         //I need to modify my getRecipes function to get any number of random recipes from the randomRecipeArray above. What randomFoodGenerator serves to do is select the random food which I then need to append to the end of the api website key and then take a random recipe from the list of results.
     }
+    
+//    func getRecipes(completed: @escaping () -> ()) {
+//            for number in 0...5 {
+//            randomFoodGenerator()
+//            urlsRetrieved.append(recipesURLCombined)
+//            Alamofire.request(recipesURLCombined).responseJSON {response in
+//                switch response.result {
+//                case .success(let value):
+//                    let json = JSON(value)
+//                    self.totalRecipes = json["to"].intValue - json["from"].intValue
+//                    let name = json["hits"][0]["recipe"]["label"].stringValue
+//                    let recipeImage = json["hits"][0]["recipe"]["image"].stringValue
+//                    let numberOfIngredients = json["hits"][0]["recipe"]["ingredientLines"].count
+//                    let recipeInstructionsURL = json["hits"][0]["recipe"]["url"].stringValue
+//                    var ingredientArray: [String] = []
+//                    for ingredientIndex in 0...numberOfIngredients {
+//                        let singleIngredient = json["hits"][0]["recipe"]["ingredientLines"][ingredientIndex].stringValue
+//                        ingredientArray.append(singleIngredient)
+//
+//                    }
+//                    var urlRecipeName = name.lowercased()
+//                    urlRecipeName = urlRecipeName.replacingOccurrences(of: " ", with: "+")
+//                    let urlRecipePage = json["hits"][0]["recipe"]["shareAs"].stringValue
+//                    self.recipeArray.append(RecipeData(recipeName: name, recipeIngredients: ingredientArray, recipeURL: urlRecipePage, recipeImageURL: recipeImage, recipeInstructionsURL: recipeInstructionsURL, randomRecipeChosenName: self.randomRecipeChosen))
+//                case .failure(let error):
+//                    print("ERROR: \(error) failed to get data from url: \(self.recipesURLCombined)")
+//                }
+//            }
+//        }
+//        completed()
+//    }
     
     func getRecipes(completed: @escaping () -> ()) {
         randomFoodGenerator()
@@ -118,7 +180,7 @@ class Recipe {
             case .success(let value):
                 let json = JSON(value)
                 self.totalRecipes = json["to"].intValue - json["from"].intValue
-//                self.recipesURL = json["next"].stringValue
+                //                self.recipesURL = json["next"].stringValue
                 let numberOfRecipes = json["hits"].count-1
                 for index in 0...numberOfRecipes {
                     let name = json["hits"][index]["recipe"]["label"].stringValue

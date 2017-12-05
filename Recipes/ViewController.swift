@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = .whiteLarge
-        activityIndicator.color = UIColor.blue
+        activityIndicator.color = UIColor.init(red: 245/255, green: 105/255, blue: 35/255, alpha: 1.0)
         view.addSubview(activityIndicator)
     }
     
